@@ -2,16 +2,34 @@
 import { useEffect, useState } from 'react';
 import { Mail, Send, Trash2, Archive, CheckCircle2, Clock, Inbox, AlertTriangle } from 'lucide-react';
 
+// 1. Definição da Interface para o TypeScript
+interface Ticket {
+  id: string;
+  senderName: string;
+  subject: string;
+  bodyRaw: string;
+  priority: 'alta' | 'média' | 'baixa'; // Tipagem estrita de prioridade
+  suggestedResponse: string;
+  analysisSummary: string;
+  status: 'pending' | 'sent' | 'archived' | 'deleted';
+  receivedAt: string;
+}
+
 export default function ProfessionalInbox() {
-  const [tickets, setTickets] = useState([]);
-  const [selectedTicket, setSelectedTicket] = useState(null);
-  const [view, setView] = useState('pending'); // 'pending', 'sent', 'archived'
+  // 2. Aplicação dos Tipos nos States
+  const [tickets, setTickets] = useState<Ticket[]>([]);
+  const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
+  const [view, setView] = useState<string>('pending');
 
   const fetchTickets = async (status: string) => {
     const res = await fetch(`/api?status=${status}`);
     const data = await res.json();
-    setTickets(Array.isArray(data) ? data : []);
-    if (data.length > 0) setSelectedTicket(data[0]);
+    
+    // Agora o TS sabe que 'data' deve ser tratado como Ticket[]
+    const ticketList = Array.isArray(data) ? data : [];
+    setTickets(ticketList);
+    
+    if (ticketList.length > 0) setSelectedTicket(ticketList[0]);
     else setSelectedTicket(null);
   };
 
@@ -25,7 +43,6 @@ export default function ProfessionalInbox() {
     fetchTickets(view);
   };
 
-  // NOVA FUNÇÃO: Exclusão real do banco de dados
   const deletePermanently = async (id: string) => {
     if (!confirm("Deseja excluir este ticket permanentemente do banco de dados?")) return;
     
@@ -57,7 +74,7 @@ export default function ProfessionalInbox() {
         <div className="p-4 border-b border-[#edebe9] font-bold text-lg bg-white sticky top-0 z-10">
           {view === 'pending' ? 'Inbox' : view === 'sent' ? 'Enviados' : 'Arquivados'}
         </div>
-        {tickets.map((t: any) => (
+        {tickets.map((t) => (
           <div 
             key={t.id} 
             onClick={() => setSelectedTicket(t)} 
@@ -69,7 +86,6 @@ export default function ProfessionalInbox() {
             </div>
             <div className="text-sm font-semibold text-[#0078d4] truncate">{t.subject}</div>
             
-            {/* Visualização da Prioridade na Lista */}
             <div className="mt-2 flex items-center gap-2">
               <span className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase ${
                 t.priority === 'alta' ? 'bg-red-100 text-red-600' : 
