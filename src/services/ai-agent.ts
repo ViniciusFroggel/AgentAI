@@ -1,10 +1,11 @@
-import { openai } from '@ai-sdk/openai';
+import { google } from '@ai-sdk/google'; // Importe o provedor correto
 import { generateObject } from 'ai';
 import { z } from 'zod';
 
 export async function analyzeIncomingEmail(emailBody: string) {
   const { object } = await generateObject({
-    model: openai('gpt-4o'), // Ou 'gpt-3.5-turbo' para economizar
+    // Mudamos para o modelo Gemini do Google
+    model: google('gemini-1.5-flash'), 
     schema: z.object({
       priority: z.enum(['high', 'medium', 'low']),
       category: z.enum(['vendas', 'suporte', 'spam', 'reclamacao']),
