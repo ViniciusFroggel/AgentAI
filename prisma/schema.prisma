@@ -1,0 +1,22 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL") 
+}
+
+model EmailTicket {
+  id                String   @id @default(cuid())
+  senderEmail       String
+  senderName        String?
+  subject           String
+  bodyRaw           String   @db.Text
+  receivedAt        DateTime @default(now())
+  priority          String
+  category          String
+  analysisSummary   String   @db.Text
+  suggestedResponse String   @db.Text
+  status            String   @default("pending")
+}

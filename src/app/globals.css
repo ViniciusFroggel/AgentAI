@@ -1,0 +1,7 @@
+@import "tailwindcss";
+
+/* Opcional: Cores customizadas que combinam com o Gemini 3 */
+@theme {
+  --color-brand-blue: #2563eb;
+  --color-ai-purple: #9333ea;
+}
