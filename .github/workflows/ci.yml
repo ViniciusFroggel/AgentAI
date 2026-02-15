@@ -1,6 +1,5 @@
-name: CI - AgentAI Pipeline
+name: CI/CD - AgentAI Pipeline
 
-# O gatilho: roda sempre que houver push ou pull request na main
 on:
   push:
     branches: [ "main" ]
@@ -8,34 +7,46 @@ on:
     branches: [ "main" ]
 
 jobs:
+  # --- ETAPA 1: CI (Continuous Integration) ---
   build-and-test:
     runs-on: ubuntu-latest
-
     steps:
-      - name: 🚚 Checkout do código
+      - name: Checkout código
         uses: actions/checkout@v4
 
-      - name: 🟢 Configurando Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
 
-      - name: 📦 Instalando dependências
+      - name: Instalar dependências
         run: npm install
 
-      - name: 💎 Gerando Prisma Client
-        # Sem isso, o build do Next.js falha pois não encontra o banco
+      - name: Gerar Cliente Prisma
         run: npx prisma generate
 
-      - name: 🚀 Validando Build do Next.js
-        # Este passo simula a criação do projeto para produção
-        # Aqui o GitHub checa se o Gemini e o Tailwind estão bem configurados
+      - name: Validar Build do Next.js
         run: npm run build
         env:
-          # Passamos chaves fakes apenas para o build não reclamar de variáveis ausentes
-          GOOGLE_GENERATIVE_AI_API_KEY: "dummy_key"
+          # Variáveis necessárias apenas para o build
+          GOOGLE_GENERATIVE_AI_API_KEY: ${{ secrets.GOOGLE_GENERATIVE_AI_API_KEY }}
           DATABASE_URL: "file:./dev.db"
 
-      - name: ✅ Feedback de Sucesso
-        run: echo "A esteira de CI passou! O Agente de IA está pronto para o combate."
+  # --- ETAPA 2: CD (Continuous Deployment) ---
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-and-test # O Deploy só inicia se o CI passar
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Instalar Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Deploy para Produção na Vercel
+        run: vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }} --yes
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
