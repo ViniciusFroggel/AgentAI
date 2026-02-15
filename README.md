@@ -36,3 +36,10 @@ Ingestão: Um e-mail simulado é enviado ao endpoint POST da API.
 **Visualização**: O frontend Next.js detecta a mudança e exibe o novo lead na Dashboard com etiquetas visuais de prioridade.
 
 **Ação**: O usuário interage com a interface para enviar a resposta, arquivar o lead ou deletar o registro permanentemente do banco de dados.
+
+<img width="1277" height="929" alt="image" src="https://github.com/user-attachments/assets/7b7eb372-fbac-4a0b-85a5-dd39758e8725" /> dashboard com o email e a prioridade dele
+<img width="1273" height="937" alt="image" src="https://github.com/user-attachments/assets/cc3c677f-8508-41f4-b0d0-ce5826d093fe" /> Um pouco sobre a estrutura do projeto
+<img width="602" height="308" alt="image" src="https://github.com/user-attachments/assets/6ec7575a-09ef-4fe4-91a9-ae1162ef31d4" /> Simulção do envio de um email
+
+
+
