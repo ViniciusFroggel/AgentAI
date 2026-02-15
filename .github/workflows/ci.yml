@@ -1,0 +1,41 @@
+name: CI - AgentAI Pipeline
+
+# O gatilho: roda sempre que houver push ou pull request na main
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🚚 Checkout do código
+        uses: actions/checkout@v4
+
+      - name: 🟢 Configurando Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: 📦 Instalando dependências
+        run: npm install
+
+      - name: 💎 Gerando Prisma Client
+        # Sem isso, o build do Next.js falha pois não encontra o banco
+        run: npx prisma generate
+
+      - name: 🚀 Validando Build do Next.js
+        # Este passo simula a criação do projeto para produção
+        # Aqui o GitHub checa se o Gemini e o Tailwind estão bem configurados
+        run: npm run build
+        env:
+          # Passamos chaves fakes apenas para o build não reclamar de variáveis ausentes
+          GOOGLE_GENERATIVE_AI_API_KEY: "dummy_key"
+          DATABASE_URL: "file:./dev.db"
+
+      - name: ✅ Feedback de Sucesso
+        run: echo "A esteira de CI passou! O Agente de IA está pronto para o combate."
