@@ -26,29 +26,6 @@ O sistema atua como uma camada de inteligência entre o cliente e a empresa. Uti
 
 ---
 
-## 🚀 Como Executar o Projeto
-
-1. **Clone o repositório**:
-   ```bash
-   git clone [https://github.com/ViniciusFroggel/AgentAI.git](https://github.com/ViniciusFroggel/AgentAI.git)
-**Instale as dependências**:
-
-**Bash**
-npm install.
-**onfiguração de Ambiente**:
-Crie um arquivo .env na raiz do projeto e adicione suas.**credenciais**:
-
-**Snippet de código**
-GOOGLE_GENERATIVE_AI_API_KEY="SUA_CHAVE_AQUI."
-**DATABASE_URL="file:./dev.db"**
-Prepare o Banco de Dados (Prisma):
-
-**Bash**
-npx prisma db push.
-**Inicie o Servidor:**
-
-## Bash
-npm run dev
 ## 📊 Demonstração de Fluxo Técnico
 Ingestão: Um e-mail simulado é enviado ao endpoint POST da API.
 
