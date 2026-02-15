@@ -42,7 +42,7 @@ Ingestão: Um e-mail simulado é enviado ao endpoint POST da API.
 <img width="1273" height="937" alt="image" src="https://github.com/user-attachments/assets/cc3c677f-8508-41f4-b0d0-ce5826d093fe" /> **Um pouco sobre a estrutura do projeto**
 
 <img width="1279" height="939" alt="image" src="https://github.com/user-attachments/assets/43702270-f7ed-4def-aee3-d76dc5914b3c" /> **Simulção do envio de um email no powershell**
- 
+ ``
 
 
 
